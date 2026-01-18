@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -57,5 +58,12 @@ class AuthController extends Controller
     {
         Auth::logout();
         return response()->json(['message' => 'Logged out']);
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            'token' => JWTAuth::refresh(JWTAuth::getToken())
+        ]);
     }
 }

@@ -10,7 +10,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-
+Route::post('/refresh', [AuthController::class, 'refresh'])
+    ->middleware('auth:api');
 Route::middleware(['auth:api'])->group(function () {
 
     // user routes
