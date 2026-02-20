@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
 use App\Models\Video;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller

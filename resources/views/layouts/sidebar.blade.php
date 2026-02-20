@@ -48,6 +48,12 @@
 		        <p>Users</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('about.*') ? 'active' : ''}}">
+		      <a href="{{route('about.index')}}">
+		        <i class="fas fa-info"></i>
+		        <p>About</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('videos.*') ? 'active' : ''}}">
 		      <a href="{{route('videos.index')}}">
 		        <i class="fas fa-play"></i>
