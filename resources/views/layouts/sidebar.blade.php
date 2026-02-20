@@ -54,6 +54,12 @@
 		        <p>Videos</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('packages.*') ? 'active' : ''}}">
+		      <a href="{{route('packages.index')}}">
+		        <i class="fas fa-list"></i>
+		        <p>Packages</p>
+		      </a>
+		    </li>
 		  </ul>
 		</div>
 	</div>
