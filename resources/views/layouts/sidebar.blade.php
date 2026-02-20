@@ -4,7 +4,8 @@
 	<div class="logo-header" data-background-color="dark">
 
 	  <a href="{{route('dashboard')}}" class="logo">
-	    <img src="assets/img/admin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+	    {{-- <img src="assets/img/admin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20"> --}}
+		<h3>Admin Dashboard</h3>
 	  </a>
 	  <div class="nav-toggle">
 	    <button class="btn btn-toggle toggle-sidebar">
@@ -70,6 +71,13 @@
 		      <a href="{{route('packages.index')}}">
 		        <i class="fas fa-list"></i>
 		        <p>Packages</p>
+		      </a>
+		    </li>
+			
+		    <li class="nav-item {{request()->routeIs('testimonials.*') ? 'active' : ''}}">
+		      <a href="{{route('testimonials.index')}}">
+		        <i class="fas fa-quote-left"></i>
+		        <p>Testimonials</p>
 		      </a>
 		    </li>
 		  </ul>

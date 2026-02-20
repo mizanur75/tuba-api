@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('packages', PackageController::class);
     Route::resource('about', AboutController::class);
     Route::resource('steps', StepController::class);
+    Route::resource('testimonials', TestimonialController::class);
 });
 
 require __DIR__ . '/auth.php';
