@@ -28,6 +28,8 @@ class UpdateVideoRequest extends FormRequest
                 'required',
                 Rule::unique('videos', 'title')->ignore($this->route('video')),
             ],
+            'subTitle' => ['required'],
+            'shortDescription' => ['required'],
             'video' => ['nullable', 'file', 'mimes:mp4,mov,avi,wmv', 'max:20480'],
             'status' => ['required']
         ];

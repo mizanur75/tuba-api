@@ -24,6 +24,8 @@ class StoreVideoRequest extends FormRequest
     {
         return [
             'title' => ['required', Rule::unique('videos', 'title')],
+            'subTitle' => ['required'],
+            'shortDescription' => ['required'],
             'video' => ['required', 'file'], // 20MB
             'status' => ['required']
         ];

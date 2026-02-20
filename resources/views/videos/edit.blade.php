@@ -26,6 +26,22 @@
                             <input type="text" class="form-control" name="title" value="{{ old('title', $video->title) }}" required>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 text-end">
+                            Sub Title <span class="required-label">*</span>
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="subTitle" value="{{ old('subTitle', $video->subTitle) }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 text-end">
+                            Short Description <span class="required-label">*</span>
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="shortDescription" value="{{ old('shortDescription', $video->shortDescription) }}" required>
+                        </div>
+                    </div>
 
                     <!-- Video -->
                     <div class="form-group row">

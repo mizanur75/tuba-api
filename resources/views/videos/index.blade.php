@@ -26,6 +26,22 @@
                           <input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
                       </div>
                   </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 text-end">
+                          Sub Title <span class="required-label">*</span>
+                      </label>
+                      <div class="col-lg-4">
+                          <input type="text" class="form-control" name="subTitle" value="{{ old('subTitle') }}" required>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 text-end">
+                          Short Description <span class="required-label">*</span>
+                      </label>
+                      <div class="col-lg-4">
+                          <input type="text" class="form-control" name="shortDescription" value="{{ old('shortDescription') }}" required>
+                      </div>
+                  </div>
 
                   <!-- Video -->
                   <div class="form-group row">
@@ -81,6 +97,8 @@
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Sub Title</th>
+                <th>Short Description</th>
                 <th>Video</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -90,6 +108,8 @@
               @foreach($data as $d)
                 <tr>
                     <td>{{$d->title}}</td>
+                    <td>{{$d->subTitle}}</td>
+                    <td>{{$d->shortDescription}}</td>
                     <td>{{$d->video}}</td>
                     <td>{{$d->status == 0 ? 'Deactive':'Active'}}</td>
                     <td>

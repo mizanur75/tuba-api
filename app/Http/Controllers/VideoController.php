@@ -40,6 +40,8 @@ class VideoController extends Controller
 
         Video::create([
             'title' => $request->title,
+            'subTitle' => $request->subTitle,
+            'shortDescription' => $request->shortDescription,
             'video' => $videoPath,
             'status' => $request->status,
         ]);
@@ -72,6 +74,8 @@ class VideoController extends Controller
         $data = [
             'title' => $request->title,
             'status' => $request->status,
+            'subTitle' => $request->subTitle,
+            'shortDescription' => $request->shortDescription,
         ];
 
         // If new video uploaded
