@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateVideoRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateVideoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,14 @@ class UpdateVideoRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->route('video'));
         return [
-            //
+            'title' => [
+                'required',
+                Rule::unique('videos', 'title')->ignore($this->route('video')),
+            ],
+            'video' => ['nullable', 'file', 'mimes:mp4,mov,avi,wmv', 'max:20480'],
+            'status' => ['required']
         ];
     }
 }

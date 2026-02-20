@@ -6,6 +6,7 @@ use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
@@ -14,7 +15,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        $data = Video::where('status', 1)->get();
+        $data = Video::all();
         return view('videos.index', compact('data'));
     }
 
@@ -29,9 +30,8 @@ class VideoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVideoRequest $request)
     {
-        // dd($request);
         if (!$request->hasFile('video')) {
             dd('File not detected');
         }
@@ -61,7 +61,7 @@ class VideoController extends Controller
      */
     public function edit(Video $video)
     {
-        //
+        return view('videos.edit', compact('video'));
     }
 
     /**
@@ -69,7 +69,28 @@ class VideoController extends Controller
      */
     public function update(UpdateVideoRequest $request, Video $video)
     {
-        //
+        $data = [
+            'title' => $request->title,
+            'status' => $request->status,
+        ];
+
+        // If new video uploaded
+        if ($request->hasFile('video')) {
+
+            // Delete old video
+            if ($video->video && Storage::disk('public')->exists($video->video)) {
+                Storage::disk('public')->delete($video->video);
+            }
+
+            // Store new video
+            $videoPath = $request->file('video')->store('videos', 'public');
+            $data['video'] = $videoPath;
+        }
+
+        $video->update($data);
+
+        return redirect()->route('videos.index')
+            ->with('success', 'Video updated successfully!');
     }
 
     /**

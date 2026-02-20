@@ -1,33 +1,72 @@
 @extends('layouts.app')
 
-@section('title','Edit Roles')
+@section('title','Edit Video')
 
 @section('body')
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Edit Role</h4>
+                <h4 class="card-title">Edit Video</h4>
             </div>
-            <form method="post" action="{{ route('roles.update', $role->id) }}">
+            <form method="POST" action="{{ route('videos.update', $video->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('put')
-        
+                @method('PUT')
+
                 <div class="card-body">
-                    <div class="form-group form-show-validation row">
-                        <label for="name" class="col-lg-3 col-md-3 col-sm-4 mt-sm-2 text-end">Role Name <span class="required-label">*</span></label>
-                        <div class="col-lg-4 col-md-9 col-sm-8">
-                            <input type="text" class="form-control" value="{{$role->name}}" id="name" name="name" placeholder="Enter Username" required>
+                    {!! multi_errors($errors) !!}
+                    {!! success() !!}
+
+                    <!-- Title -->
+                    <div class="form-group row">
+                        <label class="col-lg-3 text-end">
+                            Title <span class="required-label">*</span>
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="title" value="{{ old('title', $video->title) }}" required>
                         </div>
                     </div>
-                </div>
-        
-                <div class="card-action">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-success" type="submit"> {{ __('Update') }} </button>
-                        </div>                                      
+
+                    <!-- Video -->
+                    <div class="form-group row">
+                        <label class="col-lg-3 text-end">
+                            Video <span class="required-label">*</span>
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="file" class="form-control" name="video">
+                            
+                            @if($video->video)
+                                <div class="mt-2">
+                                    <video width="250" controls>
+                                        <source src="{{ asset('storage/'.$video->video) }}" type="video/mp4">
+                                    </video>
+                                </div>
+                            @endif
+                        </div>
                     </div>
+
+                    <!-- Status -->
+                    <div class="form-group row">
+                        <label class="col-lg-3 text-end">
+                            Status <span class="required-label">*</span>
+                        </label>
+                        <div class="col-lg-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="active" name="status" value="1" {{ old('status', $video->status) == 1 ? 'checked' : '' }}>
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="deactive" name="status" value="0" {{ old('status', $video->status) == 0 ? 'checked' : '' }}>
+                                <label class="form-check-label" for="deactive">Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-action">
+                    <button class="btn btn-success" type="submit">Update</button>
                 </div>
             </form>
         </div>

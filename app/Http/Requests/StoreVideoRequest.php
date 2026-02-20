@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreVideoRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class StoreVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required'],
+            'title' => ['required', Rule::unique('videos', 'title')],
             'video' => ['required', 'file'], // 20MB
             'status' => ['required']
         ];

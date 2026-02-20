@@ -82,6 +82,7 @@
               <tr>
                 <th>Title</th>
                 <th>Video</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -90,6 +91,7 @@
                 <tr>
                     <td>{{$d->title}}</td>
                     <td>{{$d->video}}</td>
+                    <td>{{$d->status == 0 ? 'Deactive':'Active'}}</td>
                     <td>
                         <a class="btn btn-padding btn-sm btn-info" href="{{route('videos.edit', $d->id)}}">Edit</a> 
                         <form action="{{route('videos.destroy', $d->id)}}" method="post"
