@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Add Step</h4>
+                <h4 class="card-title">Add Testimonial</h4>
             </div>
             <form method="POST" action="{{ route('testimonials.store') }}" enctype="multipart/form-data">
               @csrf
@@ -68,7 +68,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">All Step</h4>
+        <h4 class="card-title">All Testimonials</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
