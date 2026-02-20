@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Packages')
+@section('title','Steps')
 
 @section('body')
 
@@ -8,9 +8,9 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Add Package</h4>
+                <h4 class="card-title">Add Step</h4>
             </div>
-            <form method="POST" action="{{ route('packages.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('steps.store') }}" enctype="multipart/form-data">
               @csrf
 
               <div class="card-body">
@@ -20,26 +20,18 @@
                   <!-- Title -->
                   <div class="form-group row">
                       <label class="col-lg-3 text-end">
-                          Name <span class="required-label">*</span>
+                          Title <span class="required-label">*</span>
                       </label>
-                      <div class="col-lg-4">
-                          <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                      <div class="col-lg-9">
+                          <input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
                       </div>
                   </div>
                   <div class="form-group row">
                       <label class="col-lg-3 text-end">
                           Description <span class="required-label">*</span>
                       </label>
-                      <div class="col-lg-4">
+                      <div class="col-lg-9">
                           <textarea class="form-control" name="description" value="{{ old('description') }}" required></textarea>
-                      </div>
-                  </div>
-                  <div class="form-group row">
-                      <label class="col-lg-3 text-end">
-                          Price <span class="required-label">*</span>
-                      </label>
-                      <div class="col-lg-4">
-                          <input type="text" class="form-control" name="price" value="{{ old('price') }}" required>
                       </div>
                   </div>
 
@@ -76,7 +68,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">All Packages</h4>
+        <h4 class="card-title">All Step</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -86,27 +78,27 @@
           >
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Price</th>
+                <th>Title</th>
+                <th>Description</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($packages as $d)
+              @foreach($steps as $d)
                 <tr>
-                    <td>{{$d->name}}</td>
-                    <td>{{$d->price}}</td>
+                    <td>{{$d->title}}</td>
+                    <td>{{$d->description}}</td>
                     <td>{{$d->status == 0 ? 'Deactive':'Active'}}</td>
                     <td>
-                        <a class="btn btn-padding btn-sm btn-info" href="{{route('packages.edit', $d->id)}}">Edit</a> 
-                        <form action="{{route('packages.destroy', $d->id)}}" method="post"
+                        <a class="btn btn-padding btn-sm btn-info" href="{{route('steps.edit', $d->id)}}">Edit</a> 
+                        {{-- <form action="{{route('steps.destroy', $d->id)}}" method="post"
                             style="display: inline;"
                             onsubmit="return confirm('Are you Sure? Want to delete')">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-padding btn-sm btn-danger" type="submit"> Delete </button>
-                        </form>
+                        </form> --}}
                     </td>
                 </tr>
               @endforeach

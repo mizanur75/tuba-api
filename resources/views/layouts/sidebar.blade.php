@@ -54,6 +54,12 @@
 		        <p>About</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('steps.*') ? 'active' : ''}}">
+		      <a href="{{route('steps.index')}}">
+		        <i class="fas fa-step-forward"></i>
+		        <p>Steps</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('videos.*') ? 'active' : ''}}">
 		      <a href="{{route('videos.index')}}">
 		        <i class="fas fa-play"></i>
