@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Models\Package;
 use App\Models\Step;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -28,6 +29,14 @@ class ApiController extends Controller
     public function steps()
     {
         $data = Step::where('status', 1)->get();
+
+        return $data;
+    }
+
+
+    public function packages()
+    {
+        $data = Package::where('status', 1)->get();
 
         return $data;
     }
