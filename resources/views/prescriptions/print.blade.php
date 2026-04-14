@@ -194,7 +194,9 @@
             </ul>
 
             <div class="section-title">Diagnosis:</div>
-            <p>{{ $history->diagnosis }}</p>
+            <ul>
+                <li>{{ $history->diagnosis }}</li>
+            </ul>
 
         </div>
 
