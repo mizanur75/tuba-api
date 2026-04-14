@@ -182,20 +182,16 @@
         <!-- LEFT -->
         <div class="col-md-4 left-box">
 
-            <div>Pt. Type: OPD</div>
-
-            <div>SBP: 120 | DBP: 80</div>
-            <div>O₂ Satu.: 98%</div>
-            <div>Pulse: 85/min</div>
-
-            <div class="section-title">Disease History:</div>
-            <div>DM: N | HTN: N | IHD: N</div>
-
-            <div class="section-title">Behavioural History:</div>
-            <div>Smoking: N | Salt: Y</div>
-
             <div class="section-title">Chief Complaint:</div>
-            <p>{{ $history->chief_complaint }}</p>
+            @php
+            $complaints = json_decode($history->chief_complaint, true);
+            @endphp
+
+            <ul>
+            @foreach($complaints as $c)
+                <li>{{ $c }}</li>
+            @endforeach
+            </ul>
 
             <div class="section-title">Diagnosis:</div>
             <p>{{ $history->diagnosis }}</p>
