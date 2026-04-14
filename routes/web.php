@@ -31,6 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('appointments', AppointmentController::class);
     Route::get('appointments-data', [AppointmentController::class, 'data'])->name('appointments.data');
+    Route::get('prescriptions', [AppointmentController::class, 'prescriptions'])->name('prescriptions.all');
+    Route::get('prescription/{id}/print', [AppointmentController::class, 'print'])->name('prescription.print');
+
+
+    Route::get('chief-complaints/search', [AppointmentController::class, 'searchComplaint']);
 });
 
 require __DIR__ . '/auth.php';

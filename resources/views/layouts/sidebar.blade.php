@@ -43,6 +43,12 @@
 		        <p>Appointments</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('prescriptions.*') ? 'active' : ''}}">
+		      <a href="{{route('prescriptions.all')}}">
+		        <i class="fas fa-prescription"></i>
+		        <p>Prescriptions</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('roles.*') ? 'active' : ''}}">
 		      <a href="{{route('roles.index')}}">
 		        <i class="fas fa-tasks"></i>
