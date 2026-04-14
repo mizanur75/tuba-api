@@ -37,6 +37,12 @@
 		        <p>Permissions</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('appointments.*') ? 'active' : ''}}">
+		      <a href="{{route('appointments.index')}}">
+		        <i class="fas fa-calendar"></i>
+		        <p>Appointments</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('roles.*') ? 'active' : ''}}">
 		      <a href="{{route('roles.index')}}">
 		        <i class="fas fa-tasks"></i>

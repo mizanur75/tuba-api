@@ -10,4 +10,9 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = ['package_id', 'name', 'email', 'phone', 'date', 'time', 'status'];
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
 }

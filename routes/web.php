@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('about', AboutController::class);
     Route::resource('steps', StepController::class);
     Route::resource('testimonials', TestimonialController::class);
+    Route::resource('appointments', AppointmentController::class);
+    Route::get('appointments-data', [AppointmentController::class, 'data'])->name('appointments.data');
 });
 
 require __DIR__ . '/auth.php';
