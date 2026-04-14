@@ -20,6 +20,8 @@
               <tr>
                 <th>Package Name</th>
                 <th>Patient Name</th>
+                <th>Sex</th>
+                <th>Age</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Date</th>
@@ -51,6 +53,8 @@
             columns: [
                 { data: 'package_id', name: 'package_id' },
                 { data: 'name', name: 'name' },
+                { data: 'sex', name: 'sex' },
+                { data: 'age', name: 'age' },
                 { data: 'phone', name: 'phone' },
                 { data: 'email', name: 'email' },
                 { data: 'date', name: 'date' },

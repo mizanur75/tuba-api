@@ -17,24 +17,34 @@
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5>Chief Complaint</h5>
+                        <h5>Patient Info</h5>
                     </div>
 
                     <div class="card-body">
 
                         <div class="mb-3">
                             <label>Patient Name</label>
-                            <input type="text" value="{{$appointment->name}}" readonly name="patient_name" class="form-control">
+                            <input type="text" value="{{$appointment->name}}" name="patient_name" class="form-control">
                         </div>
 
-                        <div class="mb-3">
-                            <label>Phone</label>
-                            <input type="text" value="{{$appointment->phone}}" name="phone" class="form-control">
-                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label>Phone</label>
+                                <input type="text" value="{{$appointment->phone}}" name="phone" class="form-control">
+                            </div>
 
+                            <div class="col-3">
+                                <label>Age</label>
+                                <input type="text" value="{{$appointment->age}}" name="age" class="form-control">
+                            </div>
+                            <div class="col-3">
+                                <label>Sex</label>
+                                <input type="text" value="{{$appointment->sex}}" name="sex" class="form-control">
+                            </div>
+                        </div>
                         <div class="mb-3">
-                            <label>Age</label>
-                            <input type="text" name="age" class="form-control">
+                            <label>Address</label>
+                            <input type="text" value="{{$appointment->address}}" name="address" class="form-control">
                         </div>
 
                         <!-- Chief Complaint -->

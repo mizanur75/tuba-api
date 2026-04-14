@@ -148,21 +148,21 @@
     <div class="top-header d-flex justify-content-between align-items-center">
 
         <div>
-            <div class="hospital-name">Dip Hospital</div>
-            <div>ঠিকানা: Dhaka</div>
-            <div>মোবাইল: 01642134702</div>
+            <div class="hospital-name">Sadia Therapy</div>
+            <div>Address: Dhaka</div>
+            <div>Mobile: 01600000002</div>
         </div>
 
-        <div class="text-center">
+        {{-- <div class="text-center">
             <div class="green-badge">রোগী দেখার সময়ঃ</div>
             <div>Monday, Tuesday, Thursday, Friday (4pm-8pm)</div>
             <div>সিরিয়ালের জন্যঃ 01710472020</div>
-        </div>
+        </div> --}}
 
         <div class="doctor-info">
-            <strong>Demo Doctor</strong><br>
+            <strong class="hospital-name">Sadia Afrin</strong><br>
             MBBS (Reg: A-123456)<br>
-            Specialist in Medicine
+            Specialist in Hypnotherapy
         </div>
 
     </div>
@@ -170,11 +170,11 @@
     <!-- PATIENT INFO BAR -->
     <div class="patient-bar d-flex justify-content-between flex-wrap">
         <div>Name: {{ $history->patient_name }}</div>
-        <div>Age: 30 Y</div>
-        <div>Sex: Male</div>
-        <div>Addr: Dhaka</div>
+        <div>Age: {{ $history->age }}</div>
+        <div>Sex: {{ $history->sex }}</div>
+        <div>Addr: {{ $history->address }}</div>
         <div>PT. ID: {{ $history->id }}</div>
-        <div>Date: {{ date('d M Y') }}</div>
+        <div>Date: {{ date('d M Y', strtotime($history->created_at)) }}</div>
     </div>
 
     <div class="row g-0">
@@ -234,8 +234,8 @@
 
                     <strong>Demo Doctor</strong><br>
                     MBBS<br>
-                    Specialist in Medicine<br>
-                    BM&DC Reg. No: A-123456
+                    Specialist in Hypnotherapy<br>
+                    Reg. No: A-123456
                 </div>
             </div>
 

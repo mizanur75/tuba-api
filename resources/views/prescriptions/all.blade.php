@@ -20,6 +20,8 @@
                 <tr>
                     <th>Package</th>
                     <th>Patient Name</th>
+                    <th>Sex</th>
+                    <th>Age</th>
                     <th>Phone</th>
                     <th>Chief Complaint</th>
                     <th>Diagnosis</th>
@@ -50,6 +52,8 @@
             columns: [
                 { data: 'package_id', name: 'package_id' },
                 { data: 'patient_name', name: 'patient_name' },
+                { data: 'sex', name: 'sex' },
+                { data: 'age', name: 'age' },
                 { data: 'phone', name: 'phone' },
                 { data: 'chief_complaint', name: 'chief_complaint' },
                 { data: 'diagnosis', name: 'diagnosis' },
