@@ -14,8 +14,7 @@ class AppointmentController extends Controller
 {
     public function data(Request $request)
     {
-        $query = Appointment::with('package')
-            ->orderBy('id', 'DESC')->where('status', 0);
+        $query = Appointment::with('package')->where('status', 0);
 
         return DataTables::of($query)
 
@@ -115,8 +114,7 @@ class AppointmentController extends Controller
     }
     public function index()
     {
-        $appointments = Appointment::orderBy('id', 'DESC')->orderByRaw('status = 0 DESC')->get();
-        return view('appointments.index', compact('appointments'));
+        return view('appointments.index');
     }
 
     /**
