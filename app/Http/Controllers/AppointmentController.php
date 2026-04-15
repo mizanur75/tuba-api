@@ -53,11 +53,11 @@ class AppointmentController extends Controller
                     ';
                 }
             })
-            ->filterColumn('package_id', function ($query, $keyword) {
-                $query->whereHas('package', function ($q) use ($keyword) {
-                    $q->where('name', 'like', "%{$keyword}%");
-                });
-            })
+            // ->filterColumn('package_id', function ($query, $keyword) {
+            //     $query->whereHas('package', function ($q) use ($keyword) {
+            //         $q->where('name', 'like', "%{$keyword}%");
+            //     });
+            // })
 
             ->rawColumns(['status_badge', 'action'])
             ->make(true);
