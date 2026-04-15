@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\ChiefComplaint;
 use App\Models\History;
 use App\Models\Prescription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,7 +15,12 @@ class AppointmentController extends Controller
 {
     public function data(Request $request)
     {
-        $query = Appointment::with('package')->where('status', 0);
+        $query = Appointment::with('package')
+            ->where('status', 0)
+            ->orderByRaw("date = ? DESC", [Carbon::today()->toDateString()])
+            ->orderBy('date', 'ASC')
+            ->orderBy('time', 'ASC')
+            ->get();
 
         return DataTables::of($query)
 
