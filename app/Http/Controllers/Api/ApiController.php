@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
+    public function index(Request $request)
+    {
+        $date = $request->query('date');
+
+        if (!$date) {
+            return response()->json([]);
+        }
+
+        $appointments = Appointment::where('date', $date)
+            ->select('time')
+            ->get();
+
+        return response()->json($appointments);
+    }
     /**
      * Display a listing of the resource.
      */

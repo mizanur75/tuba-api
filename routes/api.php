@@ -9,4 +9,5 @@ Route::prefix('v1')->group(function () {
     Route::get('steps', [ApiController::class, 'steps']);
     Route::get('packages', [ApiController::class, 'packages']);
     Route::post('appointments', [ApiController::class, 'appointments']);
+    Route::get('/appointments', [ApiController::class, 'index']);
 });
