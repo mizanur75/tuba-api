@@ -137,6 +137,20 @@
 </head>
 
 <body>
+@php
+    $complaints = json_decode($history->chief_complaint, true) ?: [];
+    $decodedAdvice = json_decode($history->advice ?? '', true);
+    $adviceList = is_array($decodedAdvice) ? $decodedAdvice : (filled($history->advice) ? [$history->advice] : []);
+    $practitioner = $history->practitioner;
+    $isDoctorPrescription = ($history->practitioner_type ?? 'doctor') === 'doctor';
+
+    $practitionerName = $practitioner?->name ?? 'Practitioner';
+    $qualification = $practitioner?->qualification;
+    $specialization = $practitioner?->specialization ?? ($isDoctorPrescription ? 'Doctor' : 'Hypnotherapist');
+    $registrationNo = $practitioner?->registration_no;
+    $practitionerPhone = $practitioner?->phone;
+    $chamberAddress = $practitioner?->chamber_address;
+@endphp
 
 <div class="text-center my-2 no-print">
     <button onclick="window.print()" class="btn btn-dark">🖨 Print</button>
@@ -149,20 +163,19 @@
 
         <div>
             <div class="hospital-name">Sadia Therapy</div>
-            <div>Address: Dhaka</div>
-            <div>Mobile: 01600000002</div>
+            <div>Address: {{ $chamberAddress ?: 'Dhaka' }}</div>
+            <div>Mobile: {{ $practitionerPhone ?: 'N/A' }}</div>
         </div>
 
-        {{-- <div class="text-center">
-            <div class="green-badge">রোগী দেখার সময়ঃ</div>
-            <div>Monday, Tuesday, Thursday, Friday (4pm-8pm)</div>
-            <div>সিরিয়ালের জন্যঃ 01710472020</div>
-        </div> --}}
-
         <div class="doctor-info">
-            <strong class="hospital-name">Sadia Afrin</strong><br>
-            MBBS (Reg: A-123456)<br>
-            Specialist in Hypnotherapy
+            <strong class="hospital-name">{{ $practitionerName }}</strong><br>
+            @if($qualification)
+                {{ $qualification }}<br>
+            @endif
+            {{ ucfirst($history->practitioner_type ?? 'doctor') }} - {{ $specialization }}<br>
+            @if($registrationNo)
+                Reg: {{ $registrationNo }}
+            @endif
         </div>
 
     </div>
@@ -183,19 +196,17 @@
         <div class="col-md-4 left-box">
 
             <div class="section-title">Chief Complaint:</div>
-            @php
-            $complaints = json_decode($history->chief_complaint, true);
-            @endphp
-
             <ul>
-            @foreach($complaints as $c)
+            @forelse($complaints as $c)
                 <li>{{ $c }}</li>
-            @endforeach
+            @empty
+                <li>No complaint provided.</li>
+            @endforelse
             </ul>
 
             <div class="section-title">Diagnosis:</div>
             <ul>
-                <li>{{ $history->diagnosis }}</li>
+                <li>{{ $history->diagnosis ?: 'No diagnosis provided.' }}</li>
             </ul>
 
         </div>
@@ -203,24 +214,32 @@
         <!-- RIGHT -->
         <div class="col-md-8 right-box">
 
-            <div class="rx">R<sub>x</sub></div>
+            @if($isDoctorPrescription)
+                <div class="rx">R<sub>x</sub></div>
 
-            @foreach($history->prescriptions as $key => $item)
-                <div class="medicine">
-                    <strong>{{ $key+1 }}. Tab.</strong>
-                    {{ $item->medicine_name }}
+                @forelse($history->prescriptions as $key => $item)
+                    <div class="medicine">
+                        <strong>{{ $key + 1 }}. Tab.</strong>
+                        {{ $item->medicine_name }}
 
-                    <small>
-                        • {{ $item->dose }} — {{ $item->duration }}
-                    </small>
-                </div>
-            @endforeach
+                        <small>
+                            • {{ $item->dose ?: '-' }} - {{ $item->duration ?: '-' }}
+                        </small>
+                    </div>
+                @empty
+                    <p>No medicines prescribed.</p>
+                @endforelse
+            @endif
 
             <!-- Advice -->
             <div class="mt-4">
-                <strong>উপদেশ:</strong>
+                <strong>Advice:</strong>
                 <ul>
-                    <li>{{ $history->advice }}</li>
+                    @forelse($adviceList as $adviceItem)
+                        <li>{{ $adviceItem }}</li>
+                    @empty
+                        <li>No advice provided.</li>
+                    @endforelse
                 </ul>
             </div>
 
@@ -232,10 +251,14 @@
                     <div>__________________</div>
                     <strong>Signature</strong><br><br>
 
-                    <strong>Demo Doctor</strong><br>
-                    MBBS<br>
-                    Specialist in Hypnotherapy<br>
-                    Reg. No: A-123456
+                    <strong>{{ $practitionerName }}</strong><br>
+                    @if($qualification)
+                        {{ $qualification }}<br>
+                    @endif
+                    {{ $specialization }}<br>
+                    @if($registrationNo)
+                        Reg. No: {{ $registrationNo }}
+                    @endif
                 </div>
             </div>
 

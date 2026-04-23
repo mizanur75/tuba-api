@@ -21,6 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'practitioner_type',
+        'phone',
+        'qualification',
+        'specialization',
+        'registration_no',
+        'chamber_address',
+        'bio',
     ];
 
     /**
@@ -44,5 +51,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isHypnotherapist(): bool
+    {
+        return $this->practitioner_type === 'hypnotherapist';
+    }
+
+    public function isDoctor(): bool
+    {
+        return !$this->isHypnotherapist();
     }
 }

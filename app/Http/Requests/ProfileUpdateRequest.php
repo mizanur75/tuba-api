@@ -18,6 +18,13 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'practitioner_type' => ['required', Rule::in(['doctor', 'hypnotherapist'])],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'qualification' => ['nullable', 'string', 'max:255'],
+            'specialization' => ['nullable', 'string', 'max:255'],
+            'registration_no' => ['nullable', 'string', 'max:255'],
+            'chamber_address' => ['nullable', 'string', 'max:255'],
+            'bio' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

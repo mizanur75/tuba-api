@@ -12,6 +12,8 @@ class History extends Model
     protected $fillable = [
         'package_id',
         'appointment_id',
+        'practitioner_user_id',
+        'practitioner_type',
         'patient_name',
         'age',
         'sex',
@@ -32,5 +34,10 @@ class History extends Model
     public function package()
     {
         return $this->belongsTo(\App\Models\Package::class);
+    }
+
+    public function practitioner()
+    {
+        return $this->belongsTo(User::class, 'practitioner_user_id');
     }
 }

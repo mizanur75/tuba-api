@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Appointments')
+@section('title','Prescriptions')
 
 @section('body')    
 
@@ -8,7 +8,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">All Step</h4>
+        <h4 class="card-title">Prescription List</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">

@@ -49,6 +49,12 @@
 		        <p>Prescriptions</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('advices.*') ? 'active' : ''}}">
+		      <a href="{{route('advices.index')}}">
+		        <i class="fas fa-comments"></i>
+		        <p>Advices</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('roles.*') ? 'active' : ''}}">
 		      <a href="{{route('roles.index')}}">
 		        <i class="fas fa-tasks"></i>
@@ -59,6 +65,12 @@
 		      <a href="{{route('users.index')}}">
 		        <i class="fas fa-users"></i>
 		        <p>Users</p>
+		      </a>
+		    </li>
+		    <li class="nav-item {{request()->routeIs('profile.*') ? 'active' : ''}}">
+		      <a href="{{route('profile.edit')}}">
+		        <i class="fas fa-user-md"></i>
+		        <p>My Profile</p>
 		      </a>
 		    </li>
 		    <li class="nav-item {{request()->routeIs('about.*') ? 'active' : ''}}">

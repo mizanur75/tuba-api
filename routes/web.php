@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProfileController;
@@ -27,11 +28,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('videos', VideoController::class);
     Route::resource('packages', PackageController::class);
     Route::resource('about', AboutController::class);
+    Route::resource('advices', AdviceController::class);
     Route::resource('steps', StepController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('appointments', AppointmentController::class);
     Route::get('appointments-data', [AppointmentController::class, 'data'])->name('appointments.data');
     Route::get('prescriptions', [AppointmentController::class, 'prescriptions'])->name('prescriptions.all');
+    Route::get('prescriptions/{history}', [AppointmentController::class, 'viewPrescription'])->name('prescriptions.view');
+    Route::get('prescriptions/{history}/edit', [AppointmentController::class, 'editPrescription'])->name('prescriptions.edit');
+    Route::put('prescriptions/{history}', [AppointmentController::class, 'updatePrescription'])->name('prescriptions.update');
     Route::get('prescription/{id}/print', [AppointmentController::class, 'print'])->name('prescription.print');
 
 
