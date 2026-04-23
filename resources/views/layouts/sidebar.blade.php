@@ -31,12 +31,12 @@
 		        <p>Dashboard</p>
 		      </a>
 		    </li>
-		    <li class="nav-item {{request()->routeIs('permissions.*') ? 'active' : ''}}">
+		    {{-- <li class="nav-item {{request()->routeIs('permissions.*') ? 'active' : ''}}">
 		      <a href="{{route('permissions.index')}}">
 		        <i class="fas fa-lock"></i>
 		        <p>Permissions</p>
 		      </a>
-		    </li>
+		    </li> --}}
 		    <li class="nav-item {{request()->routeIs('appointments.*') ? 'active' : ''}}">
 		      <a href="{{route('appointments.index')}}">
 		        <i class="fas fa-calendar"></i>
@@ -55,7 +55,7 @@
 		        <p>Advices</p>
 		      </a>
 		    </li>
-		    <li class="nav-item {{request()->routeIs('roles.*') ? 'active' : ''}}">
+		    {{-- <li class="nav-item {{request()->routeIs('roles.*') ? 'active' : ''}}">
 		      <a href="{{route('roles.index')}}">
 		        <i class="fas fa-tasks"></i>
 		        <p>Roles</p>
@@ -66,7 +66,7 @@
 		        <i class="fas fa-users"></i>
 		        <p>Users</p>
 		      </a>
-		    </li>
+		    </li> --}}
 		    <li class="nav-item {{request()->routeIs('profile.*') ? 'active' : ''}}">
 		      <a href="{{route('profile.edit')}}">
 		        <i class="fas fa-user-md"></i>
