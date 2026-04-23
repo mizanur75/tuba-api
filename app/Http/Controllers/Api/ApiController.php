@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Appointment;
 use App\Models\Package;
+use App\Models\Setting;
 use App\Models\Step;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -58,6 +59,47 @@ class ApiController extends Controller
         $data = Package::where('status', 1)->get();
 
         return $data;
+    }
+
+    public function settings()
+    {
+        $setting = Setting::first();
+
+        if (!$setting) {
+            return response()->json([
+                'site_name' => 'Sadia Therapy',
+                'site_tagline' => 'Solution-Focused Hypnotherapy',
+                'support_email' => null,
+                'support_phone' => null,
+                'office_address' => null,
+                'footer_text' => null,
+                'facebook_url' => null,
+                'linkedin_url' => null,
+                'admin_logo' => null,
+                'admin_favicon' => null,
+                'logo' => null,
+                'favicon' => null,
+                'logo_url' => null,
+                'favicon_url' => null,
+            ]);
+        }
+
+        return response()->json([
+            'site_name' => $setting->site_name,
+            'site_tagline' => $setting->site_tagline,
+            'support_email' => $setting->support_email,
+            'support_phone' => $setting->support_phone,
+            'office_address' => $setting->office_address,
+            'footer_text' => $setting->footer_text,
+            'facebook_url' => $setting->facebook_url,
+            'linkedin_url' => $setting->linkedin_url,
+            'admin_logo' => $setting->admin_logo,
+            'admin_favicon' => $setting->admin_favicon,
+            'logo' => $setting->admin_logo,
+            'favicon' => $setting->admin_favicon,
+            'logo_url' => $setting->admin_logo ? asset('storage/' . $setting->admin_logo) : null,
+            'favicon_url' => $setting->admin_favicon ? asset('storage/' . $setting->admin_favicon) : null,
+        ]);
     }
 
     public function checkoutSession(Request $request)

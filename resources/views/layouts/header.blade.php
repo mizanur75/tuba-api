@@ -3,8 +3,8 @@
       <!--Responsive Logo Header -->
       <div class="logo-header" data-background-color="dark">
 
-        <a href="index.html" class="logo">
-          <img src="assets/img/admin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+        <a href="{{ route('dashboard') }}" class="logo">
+          <img src="{{asset('assets/img/admin/logo_light.svg')}}" alt="navbar brand" class="navbar-brand" height="20">
         </a>
         <div class="nav-toggle">
           <button class="btn btn-toggle toggle-sidebar">
@@ -62,7 +62,7 @@
                   	<div class="dropdown-divider"></div>
                   	<a class="dropdown-item" href="{{route('profile.edit')}}">My Profile</a>
                   	<div class="dropdown-divider"></div>
-                  	<a class="dropdown-item" href="#">Account Setting</a>
+                  	<a class="dropdown-item" href="{{ route('settings.edit') }}">Account Setting</a>
                   	<div class="dropdown-divider"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

@@ -73,6 +73,12 @@
 		        <p>My Profile</p>
 		      </a>
 		    </li>
+		    <li class="nav-item {{request()->routeIs('settings.*') ? 'active' : ''}}">
+		      <a href="{{route('settings.edit')}}">
+		        <i class="fas fa-cogs"></i>
+		        <p>Settings</p>
+		      </a>
+		    </li>
 		    <li class="nav-item {{request()->routeIs('about.*') ? 'active' : ''}}">
 		      <a href="{{route('about.index')}}">
 		        <i class="fas fa-info"></i>
