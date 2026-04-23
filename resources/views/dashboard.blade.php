@@ -2,547 +2,476 @@
 
 @section('title', 'Admin Dashboard')
 
+@push('css')
+<style>
+    .dashboard-hero {
+        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 55%, #42a5f5 100%);
+        border: none;
+        color: #ffffff;
+        overflow: hidden;
+    }
+
+    .dashboard-hero .btn {
+        border-color: rgba(255, 255, 255, 0.35);
+        color: #ffffff;
+    }
+
+    .dashboard-hero .btn:hover {
+        background-color: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
+    }
+
+    .metric-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        background: rgba(255, 255, 255, 0.18);
+        margin-right: 8px;
+        margin-top: 8px;
+    }
+
+    .kpi-title {
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #6c757d;
+        margin-bottom: 6px;
+    }
+
+    .kpi-value {
+        font-size: 1.65rem;
+        line-height: 1.1;
+        font-weight: 700;
+        color: #1f2d3d;
+    }
+
+    .kpi-sub {
+        font-size: 0.83rem;
+        color: #6c757d;
+    }
+
+    .kpi-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 1.1rem;
+    }
+
+    .chart-wrap {
+        min-height: 320px;
+    }
+
+    .table-modern th,
+    .table-modern td {
+        vertical-align: middle;
+    }
+
+    .package-progress .progress {
+        height: 8px;
+    }
+
+    .soft-divider {
+        border-top: 1px dashed rgba(0, 0, 0, 0.12);
+    }
+</style>
+@endpush
+
 @section('body')
+@php
+    $totalAppointments = $totalAppointments ?? 0;
+    $pendingAppointments = $pendingAppointments ?? 0;
+    $processedAppointments = $processedAppointments ?? 0;
+    $totalPrescriptions = $totalPrescriptions ?? 0;
+    $todayAppointments = $todayAppointments ?? 0;
+    $todayPrescriptions = $todayPrescriptions ?? 0;
+    $scheduledToday = $scheduledToday ?? 0;
+    $activePackages = $activePackages ?? 0;
+    $activeAdvices = $activeAdvices ?? 0;
+    $totalPractitioners = $totalPractitioners ?? 0;
+    $doctorCount = $doctorCount ?? 0;
+    $hypnotherapistCount = $hypnotherapistCount ?? 0;
+    $completionRate = $completionRate ?? 0;
+    $pendingRate = $pendingRate ?? 0;
+    $dayLabels = $dayLabels ?? [];
+    $appointmentSeries = $appointmentSeries ?? [];
+    $prescriptionSeries = $prescriptionSeries ?? [];
+    $packagePerformance = $packagePerformance ?? [];
+    $recentAppointments = $recentAppointments ?? [];
+    $recentPrescriptions = $recentPrescriptions ?? [];
+
+    $doctorShare = $totalPractitioners > 0 ? round(($doctorCount / $totalPractitioners) * 100, 1) : 0;
+    $hypnotherapistShare = $totalPractitioners > 0 ? round(($hypnotherapistCount / $totalPractitioners) * 100, 1) : 0;
+@endphp
+
+<div class="card card-round dashboard-hero mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div>
+                <h3 class="mb-2 fw-bold text-white">Operations Dashboard</h3>
+                <p class="mb-2 opacity-75">Live snapshot of appointments, prescriptions, practitioner activity, and package performance.</p>
+                <div>
+                    <span class="metric-chip"><i class="fas fa-calendar-day"></i> Scheduled Today: {{ number_format($scheduledToday) }}</span>
+                    <span class="metric-chip"><i class="fas fa-file-medical"></i> Prescriptions Today: {{ number_format($todayPrescriptions) }}</span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ route('appointments.index') }}" class="btn btn-sm btn-round">
+                    <i class="fas fa-calendar-check me-1"></i> Appointments
+                </a>
+                <a href="{{ route('prescriptions.all') }}" class="btn btn-sm btn-round">
+                    <i class="fas fa-notes-medical me-1"></i> Prescriptions
+                </a>
+                <a href="{{ route('packages.index') }}" class="btn btn-sm btn-round">
+                    <i class="fas fa-box-open me-1"></i> Packages
+                </a>
+                <a href="{{ route('advices.index') }}" class="btn btn-sm btn-round">
+                    <i class="fas fa-lightbulb me-1"></i> Advices
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
-  <div class="col-sm-6 col-md-3">
-    <div class="card card-stats card-round">
-      <div class="card-body ">
-        <div class="row align-items-center">
-          <div class="col-icon">
-            <div class="icon-big text-center icon-primary bubble-shadow-small">
-              <i class="fas fa-users"></i>
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Total Appointments</p>
+                    <h4 class="kpi-value">{{ number_format($totalAppointments) }}</h4>
+                    <p class="kpi-sub mb-0">{{ number_format($todayAppointments) }} created today</p>
+                </div>
+                <div class="kpi-icon bg-primary"><i class="fas fa-calendar-check"></i></div>
             </div>
-          </div>
-          <div class="col col-stats ms-3 ms-sm-0">
-            <div class="numbers">
-              <p class="card-category">Visitors</p>
-              <h4 class="card-title">1,294</h4>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="card card-stats card-round">
-      <div class="card-body">
-        <div class="row align-items-center">
-          <div class="col-icon">
-            <div class="icon-big text-center icon-info bubble-shadow-small">
-              <i class="fas fa-user-check"></i>
+
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Pending Queue</p>
+                    <h4 class="kpi-value">{{ number_format($pendingAppointments) }}</h4>
+                    <p class="kpi-sub mb-0">{{ $pendingRate }}% of total</p>
+                </div>
+                <div class="kpi-icon bg-warning"><i class="fas fa-hourglass-half"></i></div>
             </div>
-          </div>
-          <div class="col col-stats ms-3 ms-sm-0">
-            <div class="numbers">
-              <p class="card-category">Subscribers</p>
-              <h4 class="card-title">1303</h4>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="card card-stats card-round">
-      <div class="card-body">
-        <div class="row align-items-center">
-          <div class="col-icon">
-            <div class="icon-big text-center icon-success bubble-shadow-small">
-              <i class="fas fa-luggage-cart"></i>
+
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Prescriptions</p>
+                    <h4 class="kpi-value">{{ number_format($totalPrescriptions) }}</h4>
+                    <p class="kpi-sub mb-0">{{ number_format($todayPrescriptions) }} issued today</p>
+                </div>
+                <div class="kpi-icon bg-success"><i class="fas fa-file-medical"></i></div>
             </div>
-          </div>
-          <div class="col col-stats ms-3 ms-sm-0">
-            <div class="numbers">
-              <p class="card-category">Sales</p>
-              <h4 class="card-title">$ 1,345</h4>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="card card-stats card-round">
-      <div class="card-body">
-        <div class="row align-items-center">
-          <div class="col-icon">
-            <div class="icon-big text-center icon-secondary bubble-shadow-small">
-              <i class="far fa-check-circle"></i>
+
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Completion Rate</p>
+                    <h4 class="kpi-value">{{ $completionRate }}%</h4>
+                    <p class="kpi-sub mb-0">{{ number_format($processedAppointments) }} appointments processed</p>
+                </div>
+                <div class="kpi-icon bg-info"><i class="fas fa-chart-line"></i></div>
             </div>
-          </div>
-          <div class="col col-stats ms-3 ms-sm-0">
-            <div class="numbers">
-              <p class="card-category">Order</p>
-              <h4 class="card-title">576</h4>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-8">
-    <div class="card card-round">
-      <div class="card-header">
-        <div class="card-head-row">
-          <div class="card-title">User Statistics</div>
-          <div class="card-tools">
-            <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
-              <span class="btn-label">
-                <i class="fa fa-pencil"></i>
-              </span>
-              Export
-            </a>
-            <a href="#" class="btn btn-label-info btn-round btn-sm">
-              <span class="btn-label">
-                <i class="fa fa-print"></i>
-              </span>
-              Print
-            </a>
-          </div>
+
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Active Packages</p>
+                    <h4 class="kpi-value">{{ number_format($activePackages) }}</h4>
+                    <p class="kpi-sub mb-0">Offerings currently available</p>
+                </div>
+                <div class="kpi-icon bg-secondary"><i class="fas fa-box-open"></i></div>
+            </div>
         </div>
-      </div>
-      <div class="card-body">
-        <div class="chart-container" style="min-height: 375px">
-          <canvas id="statisticsChart"></canvas>
-        </div>
-        <div id="myChartLegend"></div>
-      </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card card-primary card-round">
-      <div class="card-header">
-        <div class="card-head-row">
-          <div class="card-title">Daily Sales</div>
-          <div class="card-tools">
-            <div class="dropdown">
-              <button class="btn btn-sm btn-label-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Export
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
+
+    <div class="col-sm-6 col-xl-2 mb-3">
+        <div class="card card-round h-100">
+            <div class="card-body d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="kpi-title">Active Advices</p>
+                    <h4 class="kpi-value">{{ number_format($activeAdvices) }}</h4>
+                    <p class="kpi-sub mb-0">Guidelines selectable in Rx</p>
+                </div>
+                <div class="kpi-icon bg-danger"><i class="fas fa-lightbulb"></i></div>
             </div>
-          </div>
         </div>
-        <div class="card-category">March 25 - April 02</div>
-      </div>
-      <div class="card-body pb-0">
-        <div class="mb-4 mt-2">
-          <h1>$4,578.58</h1>
-        </div>
-        <div class="pull-in">
-          <canvas id="dailySalesChart"></canvas>
-        </div>
-      </div>
     </div>
-    <div class="card card-round">
-      <div class="card-body pb-0">
-        <div class="h1 fw-bold float-end text-primary">+5%</div>
-        <h2 class="mb-2">17</h2>
-        <p class="text-muted">Users online</p>
-        <div class="pull-in sparkline-fix">
-          <div id="lineChart"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="card card-round">
-      <div class="card-header">
-        <div class="card-head-row card-tools-still-right">
-          <h4 class="card-title">Users Geolocation</h4>
-          <div class="card-tools">
-            <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
-            <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
-            <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
-          </div>
-        </div>
-        <p class="card-category">
-        Map of the distribution of users around the world</p>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="table-responsive table-hover table-sales">
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/id.png" alt="indonesia">
-                      </div>
-                    </td>
-                    <td>Indonesia</td>
-                    <td class="text-end">
-                      2.320
-                    </td>
-                    <td class="text-end">
-                      42.18%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/us.png" alt="united states">
-                      </div>
-                    </td>
-                    <td>USA</td>
-                    <td class="text-end">
-                      240
-                    </td>
-                    <td class="text-end">
-                      4.36%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/au.png" alt="australia">
-                      </div>
-                    </td>
-                    <td>Australia</td>
-                    <td class="text-end">
-                      119
-                    </td>
-                    <td class="text-end">
-                      2.16%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/ru.png" alt="russia">
-                      </div>
-                    </td>
-                    <td>Russia</td>
-                    <td class="text-end">
-                      1.081
-                    </td>
-                    <td class="text-end">
-                      19.65%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/cn.png" alt="china">
-                      </div>
-                    </td>
-                    <td>China</td>
-                    <td class="text-end">
-                      1.100
-                    </td>
-                    <td class="text-end">
-                      20%
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="flag">
-                        <img src="assets/img/flags/br.png" alt="brazil">
-                      </div>
-                    </td>
-                    <td>Brasil</td>
-                    <td class="text-end">
-                      640
-                    </td>
-                    <td class="text-end">
-                      11.63%
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mapcontainer">
-              <div id="world-map" class="w-100" style="height: 300px;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-    <div class="card card-round">
-      <div class="card-body">
-        <div class="card-head-row card-tools-still-right">
-          <div class="card-title">New Customers</div>
-          <div class="card-tools">
-            <div class="dropdown">
-              <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-h"></i>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-list py-4">
-          <div class="item-list">
-            <div class="avatar">
-              <img src="assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle">
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Jimmy Denis</div>
-              <div class="status">Graphic Designer</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-          <div class="item-list">
-            <div class="avatar">
-              <span class="avatar-title rounded-circle border border-white">CF</span>
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Chandra Felix</div>
-              <div class="status">Sales Promotion</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-          <div class="item-list">
-            <div class="avatar">
-              <img src="assets/img/talha.jpg" alt="..." class="avatar-img rounded-circle">
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Talha</div>
-              <div class="status">Front End Designer</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-          <div class="item-list">
-            <div class="avatar">
-              <img src="assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle">
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Chad</div>
-              <div class="status">CEO Zeleaf</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-          <div class="item-list">
-            <div class="avatar">
-              <span class="avatar-title rounded-circle border border-white bg-primary">H</span>
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Hizrian</div>
-              <div class="status">Web Designer</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-          <div class="item-list">
-            <div class="avatar">
-              <span class="avatar-title rounded-circle border border-white bg-secondary">F</span>
-            </div>
-            <div class="info-user ms-3">
-              <div class="username">Farrah</div>
-              <div class="status">Marketing</div>
-            </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-8">
-    <div class="card card-round">
-      <div class="card-header">
-        <div class="card-head-row card-tools-still-right">
-          <div class="card-title">Transaction History</div>
-          <div class="card-tools">
-            <div class="dropdown">
-              <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-h"></i>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <!-- Projects table -->
-          <table class="table align-items-center mb-0">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Payment Number</th>
-                <th scope="col" class="text-end">Date & Time</th>
-                <th scope="col" class="text-end">Amount</th>
-                <th scope="col" class="text-end">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  <button class="btn btn-icon btn-round btn-success btn-sm me-2">
-                    <i class="fa fa-check"></i>
-                  </button>
-                  Payment from #10231
-                </th>
-                <td class="text-end">
-                  Mar 19, 2020, 2.45pm
-                </td>
-                <td class="text-end">
-                  $250.00
-                </td>
-                <td class="text-end">
-                  <span class="badge badge-success">Completed</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card card-round h-100">
+            <div class="card-header d-flex flex-wrap justify-content-between gap-2 align-items-center">
+                <div>
+                    <h4 class="card-title mb-1">7-Day Service Activity</h4>
+                    <p class="card-category mb-0">Appointments vs prescriptions created per day</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-wrap">
+                    <canvas id="dashboardTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card card-round mb-3">
+            <div class="card-header">
+                <h4 class="card-title mb-1">Practitioner Mix</h4>
+                <p class="card-category mb-0">Distribution by profile type</p>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <canvas id="practitionerMixChart" style="max-height: 220px;"></canvas>
+                </div>
+                <div class="soft-divider my-3"></div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span><i class="fas fa-circle text-primary me-1"></i> Doctor</span>
+                    <strong>{{ number_format($doctorCount) }} ({{ $doctorShare }}%)</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span><i class="fas fa-circle text-danger me-1"></i> Hypnotherapist</span>
+                    <strong>{{ number_format($hypnotherapistCount) }} ({{ $hypnotherapistShare }}%)</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-round package-progress">
+            <div class="card-header">
+                <h4 class="card-title mb-1">Top Package Demand</h4>
+                <p class="card-category mb-0">Share of total appointment bookings</p>
+            </div>
+            <div class="card-body">
+                @forelse($packagePerformance as $package)
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-semibold">{{ $package['name'] }}</span>
+                            <span>{{ $package['total'] }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $package['share'] }}%"></div>
+                        </div>
+                        <small class="text-muted">{{ $package['share'] }}% share</small>
+                    </div>
+                @empty
+                    <p class="text-muted mb-0">No package booking data available yet.</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-6 mb-4">
+        <div class="card card-round h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="card-title mb-1">Recent Appointments</h4>
+                    <p class="card-category mb-0">Latest bookings and queue status</p>
+                </div>
+                <a href="{{ route('appointments.index') }}" class="btn btn-sm btn-primary">Open Queue</a>
+            </div>
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-modern table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Package</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentAppointments as $appointment)
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">{{ $appointment->name }}</div>
+                                        <small class="text-muted">{{ $appointment->phone ?: 'No phone' }}</small>
+                                    </td>
+                                    <td>{{ $appointment->package->name ?? '-' }}</td>
+                                    <td>{{ $appointment->date ?: '-' }} {{ $appointment->time ?: '' }}</td>
+                                    <td>
+                                        @if((string) $appointment->status === '0')
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @else
+                                            <span class="badge bg-success">Processed</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No appointments available yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 mb-4">
+        <div class="card card-round h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="card-title mb-1">Recent Prescriptions</h4>
+                    <p class="card-category mb-0">Most recently generated prescription records</p>
+                </div>
+                <a href="{{ route('prescriptions.all') }}" class="btn btn-sm btn-success">View All</a>
+            </div>
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-modern table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Practitioner</th>
+                                <th>Advice Count</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentPrescriptions as $history)
+                                @php
+                                    $decodedAdvice = json_decode($history->advice ?? '', true);
+                                    $adviceCount = is_array($decodedAdvice) ? count($decodedAdvice) : (filled($history->advice) ? 1 : 0);
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">{{ $history->patient_name }}</div>
+                                        <small class="text-muted">{{ $history->package->name ?? 'No package' }}</small>
+                                    </td>
+                                    <td>
+                                        <div>{{ $history->practitioner?->name ?? 'Unknown' }}</div>
+                                        <small class="text-muted">{{ ucfirst($history->practitioner_type ?? 'doctor') }}</small>
+                                    </td>
+                                    <td>{{ $adviceCount }}</td>
+                                    <td>
+                                        <a href="{{ route('prescriptions.view', $history->id) }}" class="btn btn-sm btn-info text-white" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('prescription.print', $history->id) }}" target="_blank" class="btn btn-sm btn-secondary" title="Print">
+                                            <i class="fas fa-print"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No prescription records available yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    (function () {
+        const trendChartCanvas = document.getElementById('dashboardTrendChart');
+        if (trendChartCanvas) {
+            new Chart(trendChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: @json($dayLabels),
+                    datasets: [
+                        {
+                            label: 'Appointments',
+                            data: @json($appointmentSeries),
+                            borderColor: '#1d7af3',
+                            backgroundColor: 'rgba(29, 122, 243, 0.14)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 3,
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Prescriptions',
+                            data: @json($prescriptionSeries),
+                            borderColor: '#31ce36',
+                            backgroundColor: 'rgba(49, 206, 54, 0.14)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 3,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        const practitionerMixCanvas = document.getElementById('practitionerMixChart');
+        if (practitionerMixCanvas) {
+            new Chart(practitionerMixCanvas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Doctor', 'Hypnotherapist'],
+                    datasets: [
+                        {
+                            data: [{{ $doctorCount }}, {{ $hypnotherapistCount }}],
+                            backgroundColor: ['#1d7af3', '#f3545d'],
+                            borderColor: ['#ffffff', '#ffffff'],
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+    })();
+</script>
+@endpush
